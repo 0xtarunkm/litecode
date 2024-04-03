@@ -39,7 +39,6 @@ export function SignIn() {
               password,
               redirect: false,
             });
-            console.log(res);
             router.push('/');
           }}
         >

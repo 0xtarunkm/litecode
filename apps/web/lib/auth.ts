@@ -1,5 +1,7 @@
 import CredentialProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
+import prisma from '../db';
+import bcrypt from 'bcryptjs';
 
 export const authHandler = {
   providers: [
@@ -14,10 +16,29 @@ export const authHandler = {
         },
       },
       async authorize(credentials: any) {
+        const user = await prisma.user.findFirst({
+          where: {
+            email: credentials.email,
+          },
+        });
+
+        if (!user) {
+          throw new Error('User does not exists');
+        }
+
+        const comparedPassword = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+
+        if (!comparedPassword) {
+          throw new Error('Wrong password');
+        }
+
         return {
-          id: '1',
-          email: 'tarunkumar',
-          name: 'Tarun',
+          id: user.id,
+          username: user.username,
+          email: user.email,
         };
       },
     }),
