@@ -7,11 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
   id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
+  name          String
+  email         String    @unique
   username      String    @unique
   password      String
   Submissions   Submission[]
@@ -19,26 +18,10 @@ model User {
 
 model Problem {
   id          String       @id @default(uuid())
-  title       String
-  description String
+  content     String
+  Tag         String
   difficulty  String 
-  tags        Tag[]
-  submissions Submission[]
-  testCases   TestCase[]
-}
-
-model TestCase {
-  id         String      @id @default(uuid())
-  input      String
-  output     String
-  problemId  String
-  problem    Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model Tag {
-  id       String    @id @default(uuid())
-  name     String    
-  problems Problem[]
+  testCases   String
 }
 
 model Submission {
@@ -49,6 +32,4 @@ model Submission {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String
-  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  problemId String
 }
