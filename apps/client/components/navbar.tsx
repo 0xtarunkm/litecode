@@ -10,6 +10,8 @@ import { BeakerIcon } from '@heroicons/react/24/solid';
 import {
   ArrowLeftCircle,
   ArrowRightCircle,
+  Code2Icon,
+  PlayIcon,
   PlusCircleIcon,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -59,7 +61,7 @@ export default function Navbar() {
             </TooltipContent>
           </Tooltip>
         </div>
-        {session.data && (
+        {/* {session.data && (
           <div className="ml-10">
             <Tooltip>
               <TooltipTrigger asChild>
@@ -76,8 +78,42 @@ export default function Navbar() {
               </TooltipContent>
             </Tooltip>
           </div>
-        )}
+        )} */}
       </div>
+
+      {/* middle section */}
+      {session.data && (
+        <div className="ml-10 space-x-4">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                onClick={() => router.push('/problem/add')}
+              >
+                <PlayIcon className="h-5 w-5 mr-3 text-green-500" />
+                <p>Run</p>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Run Code</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                onClick={() => router.push('/problem/add')}
+              >
+                <Code2Icon className="h-5 w-5 mr-3 text-green-500" />
+                <p>Submit</p>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Submit Code</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      )}
 
       {/* Right section */}
       <div>

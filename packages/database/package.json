@@ -7,6 +7,9 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate"
   },
+  "exports": {
+    "./client": "./index.ts"
+  },
   "dependencies": {
     "@prisma/client": "latest"
   },

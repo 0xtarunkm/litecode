@@ -8,28 +8,61 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  username      String    @unique
-  password      String
-  Submissions   Submission[]
+  id          String       @id @default(cuid())
+  name        String
+  email       String       @unique
+  username    String       @unique
+  password    String
+  Submissions Submission[]
 }
 
 model Problem {
-  id          String       @id @default(uuid())
-  content     String
-  Tag         String
-  difficulty  String 
-  testCases   String
+  id           String     @id @default(uuid())
+  title        String
+  languages    Language[]
+  description  String
+  boilerplates Boilerplate[]
+  testCases    TestCase[]
+}
+
+model TestCase {
+  id        String   @id @default(uuid())
+  content   String
+  language  Language
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  problemId String
+}
+
+model Boilerplate {
+  id        String   @id @default(uuid())
+  content   String
+  language  Language
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  problemId String
 }
 
 model Submission {
   id        String   @id @default(uuid())
   code      String
-  language  String
-  verdict   String
+  language  Language
+  verdict   Verdict
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String
+}
+
+enum Language {
+  C
+  CPP
+  JAVA
+  PYTHON
+  JAVASCRIPT
+}
+
+enum Verdict {
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT_EXCEEDED
+  RUNTIME_ERROR
+  COMPILATION_ERROR
 }
