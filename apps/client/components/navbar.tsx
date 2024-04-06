@@ -14,9 +14,11 @@ import {
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const session = useSession();
+  const router = useRouter();
 
   return (
     <div className="px-3 py-1 flex items-center justify-between">
@@ -61,7 +63,10 @@ export default function Navbar() {
           <div className="ml-10">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="outline">
+                <Button
+                  variant="outline"
+                  onClick={() => router.push('/problem/add')}
+                >
                   <PlusCircleIcon className="h-5 w-5 mr-3 text-blue-500" />
                   <p>Add</p>
                 </Button>
