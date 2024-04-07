@@ -12,15 +12,19 @@ import {
   ArrowRightCircle,
   Code2Icon,
   PlayIcon,
-  PlusCircleIcon,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-export default function Navbar() {
+import { codeAtom } from '@repo/store';
+import { useRecoilValue } from 'recoil';
+
+export default function Navbar({ problem }: { problem: any }) {
   const session = useSession();
   const router = useRouter();
+
+  const code = useRecoilValue(codeAtom);
 
   return (
     <div className="px-3 py-1 flex items-center justify-between">
@@ -86,10 +90,7 @@ export default function Navbar() {
         <div className="ml-10 space-x-4">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                onClick={() => router.push('/problem/add')}
-              >
+              <Button variant="outline">
                 <PlayIcon className="h-5 w-5 mr-3 text-green-500" />
                 <p>Run</p>
               </Button>

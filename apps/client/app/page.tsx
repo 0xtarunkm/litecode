@@ -20,7 +20,7 @@ export default async function Home() {
   const problem = await getProblem();
   return (
     <main className="h-screen flex flex-col">
-      <Navbar />
+      <Navbar problem={problem} />
       <div className="h-screen p-2 overflow-auto">
         <Workspace problem={problem} />
       </div>
