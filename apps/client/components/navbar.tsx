@@ -20,6 +20,8 @@ import { useRouter } from 'next/navigation';
 import { codeAtom } from '@repo/store';
 import { useRecoilValue } from 'recoil';
 
+import axios from 'axios';
+
 export default function Navbar({ problem }: { problem: any }) {
   const session = useSession();
   const router = useRouter();
@@ -90,7 +92,18 @@ export default function Navbar({ problem }: { problem: any }) {
         <div className="ml-10 space-x-4">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline">
+              <Button
+                variant="outline"
+                onClick={async () =>
+                  await axios.post('http://localhost:3000/api/problem/run', {
+                    problemId: problem.id,
+                    code: code.code,
+                    testcase: problem.testCases[0].content,
+                    userId: '1',
+                    language: problem.languages[0],
+                  })
+                }
+              >
                 <PlayIcon className="h-5 w-5 mr-3 text-green-500" />
                 <p>Run</p>
               </Button>

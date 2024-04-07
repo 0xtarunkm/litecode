@@ -8,6 +8,10 @@ async function getProblem() {
       where: {
         id: '6c1d68df-5ab8-4cee-b333-e7ae36bd8b3b',
       },
+      include: {
+        testCases: true,
+        boilerplates: true,
+      },
     });
 
     return response;

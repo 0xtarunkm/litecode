@@ -33,8 +33,6 @@ export default function Dashboard() {
       testcase: testCase,
       language,
     });
-
-    console.log(problem);
   };
   return (
     <div className="grid h-screen w-full">

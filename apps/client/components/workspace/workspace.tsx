@@ -7,7 +7,6 @@ import Description from './description';
 import CodeEditor from './editor';
 
 export default function Workspace({ problem }: { problem: any }) {
-  console.log(problem);
   return (
     <ResizablePanelGroup direction="horizontal" className="rounded-lg border">
       <ResizablePanel defaultSize={50}>
