@@ -1,7 +1,7 @@
 import { createClient } from 'redis';
-import { processSubmission } from './lib/processSubmission';
+import { runBuildCommand, runContainer } from './lib/docker';
 
-const client = createClient();
+export const client = createClient();
 
 async function startWorker() {
   try {
@@ -14,7 +14,31 @@ async function startWorker() {
 
         // console.log(`Received submission: ${JSON.stringify(submission)}`);
         if (submission?.element === null) continue;
-        await processSubmission(JSON.parse(submission?.element!));
+        const submissionObject = JSON.parse(submission?.element!);
+
+        await runBuildCommand(submissionObject.payload.problemId);
+
+        await runContainer(submissionObject.payload.problemId)
+          .then((data) => {
+            client.publish(
+              'submission_output',
+              JSON.stringify({
+                userId: submissionObject.payload.userId,
+                output: data,
+                type: 'success',
+              })
+            );
+          })
+          .catch((error) => {
+            client.publish(
+              'submission_output',
+              JSON.stringify({
+                userId: submissionObject.payload.userId,
+                output: error,
+                type: 'failed',
+              })
+            );
+          });
       } catch (error) {
         throw new Error(`Error: ${error}`);
       }
