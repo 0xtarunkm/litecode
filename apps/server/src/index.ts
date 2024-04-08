@@ -12,7 +12,6 @@ async function startWorker() {
       try {
         const submission = await client.brPop('problems-queue', 0);
 
-        // console.log(`Received submission: ${JSON.stringify(submission)}`);
         if (submission?.element === null) continue;
         const submissionObject = JSON.parse(submission?.element!);
 
