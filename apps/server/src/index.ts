@@ -15,10 +15,10 @@ export function buildProject(
     );
 
     child.stdout?.on('data', function (data) {
-      console.log('stdout: ' + data);
+      client.publish('submission-result', JSON.stringify({ result: data }));
     });
     child.stderr?.on('data', function (data) {
-      console.log('stderr: ' + data);
+      client.publish('submission-result', JSON.stringify({ result: data }));
     });
 
     child.on('close', function (code) {
@@ -27,17 +27,20 @@ export function buildProject(
   });
 }
 
-(async () => {
+async function init() {
   await client.connect();
+  while (true) {
+    const submission = await client.brPop('problems-queue', 0);
 
-  const submission = await client.brPop('problems-queue', 0);
+    if (submission?.element === null) return;
+    const submissionObject = JSON.parse(submission?.element!);
 
-  if (submission?.element === null) return;
-  const submissionObject = JSON.parse(submission?.element!);
+    await buildProject(
+      submissionObject.payload.code,
+      submissionObject.payload.testcase,
+      submissionObject.payload.problemId
+    );
+  }
+}
 
-  await buildProject(
-    submissionObject.payload.code,
-    submissionObject.payload.testcase,
-    submissionObject.payload.problemId
-  );
-})();
+init();
