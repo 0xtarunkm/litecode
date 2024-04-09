@@ -14,7 +14,7 @@ wss.on('connection', async (ws) => {
   await subscriber.connect();
 
   ws.on('message', async () => {
-    await subscriber.subscribe('submission_output', (msg) => {
+    await subscriber.subscribe('submission-result', (msg) => {
       ws.send(msg);
     });
   });
