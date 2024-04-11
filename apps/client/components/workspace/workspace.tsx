@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/resizable';
 import Description from './description';
 import CodeEditor from './editor';
-import Output from './Output';
+import Output from './output';
 
 export default function Workspace({ problem }: { problem: any }) {
   return (
